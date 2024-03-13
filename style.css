@@ -7,3 +7,8 @@
     height: 1.5rem;
     margin: 0;
 }
+
+.rounded-table {
+    border-radius: 10px;
+    overflow: hidden;
+}
