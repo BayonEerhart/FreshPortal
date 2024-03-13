@@ -1,12 +1,6 @@
 <?php
 
-$host = '127.0.0.1';
-$db = 'Freshportal';
-$user = 'bit';
-$pass = 'bit';
-$charset = 'utf8mb4';
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$pdo = new PDO($dsn, $user, $pass);
+include_once "connect.php";
 
 $stmt = $pdo->prepare("SELECT * FROM `employee`");
 $stmt->execute();
@@ -49,53 +43,47 @@ function get_value($value)
         <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">nieuw</button>
     </div>
 
- 
-    
-
-
     <div class="modal fade" id="email-fail" tabindex="-1" aria-labelledby="add" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="add">employee <?=  get_value("id") ?></h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add">medewerker <?=  get_value("id") ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="nieuw.php" method="post">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">voor naam</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" value="<?= get_value("firstName")?>" required>
                         </div>
-                        <div class="modal-body">
-                            <form action="nieuw.php" method="post">
-                                <div class="mb-3">
-                                    <label for="firstName" class="form-label">voor naam</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" value="<?= get_value("firstName")?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="lastName" class="form-label">achter naam</label>
-                                    <input type="text" class="form-control" id="lastName" name="lastName" value="<?= get_value("firstName")?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label ">email</label>
-                                    <input type="email" class="form-control border border-danger border-3" id="email" name="email" value="<?= get_value("email")?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="adres" class="form-label">adres</label>
-                                    <input type="text" class="form-control" id="adres" name="adres" value="<?= get_value("adres")?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="age" class="form-label">leeftijd</label>
-                                    <input type="date" class="form-control" id="age" name="age" value="<?= get_value("age")?>" required>
-                                </div>
-                                <?php if (get_value("id") != ""){ ?>
-                                <div style="visibility: hidden">
-                                    <label for="id" class="form-label"></label>
-                                    <input type="number" class="form-control" id="id" name="id" value="<?= get_value("id")?>" required>
-                                </div>
-                                <?php } ?>
-                                <button type="submit" class="btn btn-primary">opslaan</button>
-                            </form>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">achter naam</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" value="<?= get_value("firstName")?>" required>
                         </div>
-                    </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label d-flex justify-content-between">email <p class="text-danger"> je email bestaat al</p></label>
+                            <input type="email" class="form-control border border-danger border-3" id="email" name="email" value="<?= get_value("email")?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adres" class="form-label">adres</label>
+                            <input type="text" class="form-control" id="adres" name="adres" value="<?= get_value("adres")?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="age" class="form-label">leeftijd</label>
+                            <input type="date" class="form-control" id="age" name="age" value="<?= get_value("age")?>" required>
+                        </div>
+                        <?php if (get_value("id") != ""){ ?>
+                        <div style="visibility: hidden">
+                            <label for="id" class="form-label"></label>
+                            <input type="number" class="form-control" id="id" name="id" value="<?= get_value("id")?>" required>
+                        </div>
+                        <?php } ?>
+                        <button type="submit" class="btn btn-primary">opslaan</button>
+                    </form>
                 </div>
             </div>
-
-
+        </div>
+    </div>
 
     <table class="table  table-borderless rounded-table ">
         <thead class="table-secondary border-table-with  border-white">
@@ -121,13 +109,12 @@ function get_value($value)
                     </div>
                 </td>
             </tr>
-            
 
             <div class="modal fade" id="edit-<?=  $data[$i][0] ?>" tabindex="-1" aria-labelledby="add" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="add">employee <?=  $data[$i][0] ?></h5>
+                            <h5 class="modal-title" id="add">medewerker <?=  $data[$i][0] ?></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -162,8 +149,6 @@ function get_value($value)
                     </div>
                 </div>
             </div>
-
-
             <?php endfor; ?>
         </tbody>
     </table>
@@ -173,7 +158,7 @@ function get_value($value)
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="add">Add Employee</h5>
+                <h5 class="modal-title" id="add">medewerker toevoegen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

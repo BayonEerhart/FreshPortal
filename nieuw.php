@@ -10,13 +10,9 @@ if (!(
     exit();
 }
 
-$host = '127.0.0.1';
-$db = 'Freshportal';
-$user = 'bit';
-$pass = 'bit';
-$charset = 'utf8mb4';
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$pdo = new PDO($dsn, $user, $pass);
+include "connect.php";
+
+
 
 $firstName = $_POST['firstName'];
 $lastName = $_POST['lastName'];
